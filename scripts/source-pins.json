@@ -1,0 +1,18 @@
+[
+  {
+    "file": "pauschalen.xlsx",
+    "url": "https://oaat-otma.ch/fileadmin/redaktion/dokumente/DE/Gesamt-Tarifsystem/Vertraege_und_Anhaenge/Anhang_A1_Katalog_der_Ambulanten_Pauschalen_v1.1c.xlsx",
+    "final_url": "https://oaat-otma.ch/fileadmin/redaktion/dokumente/DE/Gesamt-Tarifsystem/Vertraege_und_Anhaenge/Anhang_A1_Katalog_der_Ambulanten_Pauschalen_v1.1c.xlsx",
+    "retrieved_at": "2026-10-22T03:39:59.464591+00:00",
+    "bytes": 111526,
+    "sha256": "72371deebdbd3b090a5f45b59142933a27f3dbc6e6a45e6eaee36b143ddfea2a"
+  },
+  {
+    "file": "tardoc.xlsx",
+    "url": "https://oaat-otma.ch/fileadmin/redaktion/dokumente/DE/Gesamt-Tarifsystem/Vertraege_und_Anhaenge/Anhang_A2_Katalog_des_TARDOC_1.4c.xlsx",
+    "final_url": "https://oaat-otma.ch/fileadmin/redaktion/dokumente/DE/Gesamt-Tarifsystem/Vertraege_und_Anhaenge/Anhang_A2_Katalog_des_TARDOC_1.4c.xlsx",
+    "retrieved_at": "2026-10-22T03:40:00.028723+00:00",
+    "bytes": 888136,
+    "sha256": "df4961dd22e6983f0829dbc556092afdb8f86f129ff17e39ae0ca6bce95af256"
+  }
+]

@@ -1,0 +1,263 @@
+{
+  "schemaVersion": 1,
+  "edition": "2026-reference-v1",
+  "asOf": "2026-10-22",
+  "coverage": "Eigene fachliche Referenz; keine öffentlich eingebetteten Tarifpositionen",
+  "documents": [
+    {
+      "id": "version",
+      "title": "Version 2026: Verträge und Anhänge",
+      "url": "https://oaat-otma.ch/gesamt-tarifsystem/vertraege-und-anhaenge",
+      "date": "2026-10-22",
+      "dateKind": "Abruf"
+    },
+    {
+      "id": "faq",
+      "title": "OAAT: Fachliche FAQ",
+      "url": "https://oaat-otma.ch/gesamt-tarifsystem/faq",
+      "date": "2026-10-22",
+      "dateKind": "Abruf"
+    },
+    {
+      "id": "browser",
+      "title": "Offizieller Tarifbrowser: TARDOC, Pauschalen, Definitionshandbuch",
+      "url": "https://tarifbrowser.oaat-otma.ch/startPortal",
+      "date": "2026-10-22",
+      "dateKind": "Abruf"
+    },
+    {
+      "id": "legal",
+      "title": "Rechtliche Hinweise und Nutzungsbedingungen",
+      "url": "https://oaat-otma.ch/rechtliche-hinweise",
+      "date": "2026-10-22",
+      "dateKind": "Abruf"
+    },
+    {
+      "id": "license",
+      "title": "Lizenzbedingungen: insbesondere Ziffern 4, 5 und 7",
+      "url": "https://oaat-otma.ch/gesamt-tarifsystem/tarifkomponenten/lizenzbedingungen",
+      "date": "2025-01-01",
+      "dateKind": "Dokumentstand"
+    },
+    {
+      "id": "tardoc",
+      "title": "A2: TARDOC 1.4c_260402 · XLSX",
+      "url": "https://oaat-otma.ch/fileadmin/redaktion/dokumente/DE/Gesamt-Tarifsystem/Vertraege_und_Anhaenge/Anhang_A2_Katalog_des_TARDOC_1.4c.xlsx",
+      "date": "2026-04-02",
+      "dateKind": "Veröffentlichter Stand"
+    },
+    {
+      "id": "pauschalen",
+      "title": "A1: Ambulante Pauschalen 1.1c · XLSX",
+      "url": "https://oaat-otma.ch/fileadmin/redaktion/dokumente/DE/Gesamt-Tarifsystem/Vertraege_und_Anhaenge/Anhang_A1_Katalog_der_Ambulanten_Pauschalen_v1.1c.xlsx",
+      "date": "2025-11-05",
+      "dateKind": "Veröffentlichter Stand"
+    },
+    {
+      "id": "anwendung",
+      "title": "Anhang B: Anwendungsmodalitäten · PDF",
+      "url": "https://oaat-otma.ch/fileadmin/redaktion/dokumente/DE/Gesamt-Tarifsystem/Vertraege_und_Anhaenge/250430_AnhangB_Anwendungsmodalitaeten.pdf",
+      "date": "2025-04-30",
+      "dateKind": "Veröffentlichter Stand"
+    },
+    {
+      "id": "release",
+      "title": "Release notes: technisches Update 02.04.2026 · PDF",
+      "url": "https://oaat-otma.ch/fileadmin/redaktion/dokumente/DE/Gesamt-Tarifsystem/Vertraege_und_Anhaenge/Releasenotes.pdf",
+      "date": "2026-04-02",
+      "dateKind": "Veröffentlichter Stand"
+    }
+  ],
+  "entries": [
+    {
+      "id": "system",
+      "mode": "both",
+      "title": "Systemwechsel ab 2026",
+      "category": "Einordnung",
+      "summary": "TARDOC und Ambulante Pauschalen ersetzen seit 1. Januar 2026 gemeinsam TARMED im ambulanten ärztlichen Gesamt-Tarifsystem.",
+      "detail": "Der Browser zeigt hier eigene fachliche Kurzreferenzen. Er entscheidet nicht, welcher Tarif für eine konkrete Behandlung anzuwenden ist. 2027 wird separat veröffentlicht und ist nicht Gegenstand dieser Edition.",
+      "sources": [
+        "version"
+      ]
+    },
+    {
+      "id": "tardoc-points",
+      "mode": "tardoc",
+      "title": "TARDOC: normierte AL und IPL",
+      "category": "Rechenbasis",
+      "summary": "TARDOC weist Taxpunkte für ärztliche Leistung (AL) und Infrastruktur-/Personalleistung (IPL) getrennt aus.",
+      "detail": "Für eine rein arithmetische Bewertung werden AL und IPL addiert und mit einem selbst eingegebenen Taxpunktwert multipliziert. Mengen- und Kumulationsregeln bleiben unabhängig davon zu prüfen.",
+      "sources": [
+        "tardoc",
+        "faq"
+      ]
+    },
+    {
+      "id": "tpw",
+      "mode": "both",
+      "title": "Kein einheitlicher nationaler Frankenpreis",
+      "category": "Rechenbasis",
+      "summary": "Taxpunkte sind keine CHF-Beträge. Der Taxpunktwert (TPW) wird zwischen den Tarifpartnern vereinbart.",
+      "detail": "Hier ist kein amtlicher TPW voreingestellt. Der Nutzer trägt den für sein Szenario belegten Wert in CHF pro Taxpunkt ein. Es erfolgt keine kantonale oder versicherungsbezogene Zuordnung.",
+      "sources": [
+        "faq"
+      ]
+    },
+    {
+      "id": "pauschal-points",
+      "mode": "pauschalen",
+      "title": "Pauschalen: Bewertung in Taxpunkten",
+      "category": "Rechenbasis",
+      "summary": "Auch Ambulante Pauschalen werden mit Taxpunkten bewertet, nicht mit einem SwissDRG-Kostengewicht.",
+      "detail": "Für eine bereits bestimmte Pauschale gilt als arithmetische Rechenbasis: Taxpunkte × vereinbarter TPW. Eine ausgewählte ähnliche Pauschale ist kein Ersatz für die korrekte Gruppierung.",
+      "sources": [
+        "faq",
+        "pauschalen"
+      ]
+    },
+    {
+      "id": "grouper",
+      "mode": "pauschalen",
+      "title": "Fallzuordnung benötigt den Grouper",
+      "category": "Anwendung",
+      "summary": "Die Zuordnung zu einer Pauschale beruht auf Diagnose, Leistungen und weiteren Merkmalen, etwa dem Alter.",
+      "detail": "Der offizielle Grouper bzw. TarifMatcher verarbeitet die dafür erforderlichen Regeln. Dieses Angebot enthält keinen Grouper und leitet keine Pauschale aus Suchbegriffen oder Diagnosen ab.",
+      "sources": [
+        "faq",
+        "browser"
+      ]
+    },
+    {
+      "id": "scope",
+      "mode": "pauschalen",
+      "title": "Nicht nur für Spitäler",
+      "category": "Anwendung",
+      "summary": "Der Anwendungsbereich der Ambulanten Pauschalen hängt nicht allein davon ab, ob die Leistung in einer Praxis oder im Spital erbracht wird.",
+      "detail": "Eine tariflich erfasste Behandlung kann auch in einer Arztpraxis unter eine Pauschale fallen. Die Suchfilter hier bilden keine Berechtigungs- oder Anwendungsentscheidung ab.",
+      "sources": [
+        "faq",
+        "anwendung"
+      ]
+    },
+    {
+      "id": "included",
+      "mode": "pauschalen",
+      "title": "Enthaltene Leistungen und Implantate",
+      "category": "Anwendung",
+      "summary": "Pauschalen umfassen grundsätzlich auch nichtärztliche Leistungen, Arzneimittel, Material und Laborleistungen eines Patientenkontakts.",
+      "detail": "Ausnahmen, insbesondere gesondert abrechenbare Implantate, sind anhand des konkreten Kataloghinweises und der gültigen Anwendungsmodalitäten zu prüfen. Der Rechner addiert keine externen Zuschläge automatisch.",
+      "sources": [
+        "faq",
+        "pauschalen",
+        "anwendung"
+      ]
+    },
+    {
+      "id": "extras",
+      "mode": "tardoc",
+      "title": "Zusätzliche Leistungen separat prüfen",
+      "category": "Anwendung",
+      "summary": "Laboranalysen, Arzneimittel und Material sind nicht pauschal als beliebige TARDOC-Zusatzpositionen anzusetzen.",
+      "detail": "Die OAAT-FAQ verweist unter Vorbehalt der Kapitel- und medizinischen Interpretationen auf AL, SL, ALT und die Definition AD-07. Hier werden diese Ansprüche nicht validiert oder mitberechnet.",
+      "sources": [
+        "faq",
+        "tardoc"
+      ]
+    },
+    {
+      "id": "norm",
+      "mode": "both",
+      "title": "Keinen weiteren Normierungsfaktor anwenden",
+      "category": "Rechenbasis",
+      "summary": "Die OAAT erläutert, dass Normierungsfaktoren bereits in den ausgewiesenen Taxpunkten enthalten sind.",
+      "detail": "Eine zusätzliche pauschale Multiplikation mit einem Einführungs-/Normierungsfaktor ist in diesem Rechner nicht vorgesehen. Abweichende Verträge oder konkrete Sonderregeln werden nicht abgebildet.",
+      "sources": [
+        "faq"
+      ]
+    },
+    {
+      "id": "round",
+      "mode": "tardoc",
+      "title": "Technisches Update vom 2. April 2026",
+      "category": "Quellstand",
+      "summary": "Die Release notes beschreiben Taxpunkte mit zwei Nachkommastellen; die gepinnte XLSX enthält dennoch längere XML-Rohwerte.",
+      "detail": "Der lokale Import ist auf die hashgeprüfte XLSX 1.4c_260402 gepinnt. Der lokale Konverter rundet mit Decimal/ROUND_HALF_UP je AL-/IPL-Komponente auf zwei Nachkommastellen; die unveränderte Originalzelle bleibt separat in raw erhalten, decimal ist die gerundete Rechenbasis. Laut Original ist die offizielle Datenbank bei Widersprüchen die Masterversion. Ein Abgleich aller Positionen gegen diese Datenbank ist hier nicht implementiert.",
+      "sources": [
+        "release",
+        "tardoc"
+      ]
+    },
+    {
+      "id": "limitations",
+      "mode": "tardoc",
+      "title": "Interpretationen und Tarifmechanik beachten",
+      "category": "Anwendung",
+      "summary": "Ein positiver Rechenbetrag bedeutet nicht, dass die Leistung abrechenbar ist.",
+      "detail": "Allgemeine Definitionen, generelle und Kapitelinterpretationen, medizinische Interpretation, Dignitäten, Sparten, Mengen und Kumulationen können entscheidend sein. Nach lokalem Import zeigt der Detaildialog die Originalfelder und alle begleitenden Tabellen, wertet diese jedoch nicht maschinell aus.",
+      "sources": [
+        "tardoc",
+        "faq"
+      ]
+    },
+    {
+      "id": "missing",
+      "mode": "both",
+      "title": "Offene und fehlende Punkte sind nicht null",
+      "category": "Rechenbasis",
+      "summary": "Unbewertete Pauschalen oder TARDOC-Positionen ohne feste Punktwerte ergeben keinen automatisch berechenbaren CHF-Betrag.",
+      "detail": "Der lokale Import trennt Zahlen, ausdrücklich offene Bewertungen und leere Quellzellen. Prozentzuschläge und andere abhängige Bewertungen werden nicht aus dem Positionstitel geraten. Der Rechner verweigert eine unvollständige Basis.",
+      "sources": [
+        "tardoc",
+        "pauschalen"
+      ]
+    },
+    {
+      "id": "contact",
+      "mode": "both",
+      "title": "Sitzung, Patientenkontakt und Behandlung",
+      "category": "Anwendung",
+      "summary": "Diese Begriffe beschreiben nicht beliebig austauschbare Abrechnungseinheiten.",
+      "detail": "Anhang B unterscheidet Sitzung, zugeordnete Leistungen und ambulante Behandlung. Einzelne Rechenmengen hier sind ausdrücklich nur Szenarien, keine Prüfung der tariflichen Fallbildung.",
+      "sources": [
+        "anwendung"
+      ]
+    },
+    {
+      "id": "dignity",
+      "mode": "both",
+      "title": "Dignität, Besitzstand und Sparten",
+      "category": "Anwendung",
+      "summary": "Die fachliche Berechtigung ist unabhängig von der blossen rechnerischen Bewertung zu prüfen.",
+      "detail": "Qualitative Dignitäten und gegebenenfalls Spartenanerkennungen oder Besitzstände bleiben Voraussetzung. Weder Suchergebnis noch Rechner bestätigen diese Voraussetzungen.",
+      "sources": [
+        "faq",
+        "tardoc"
+      ]
+    },
+    {
+      "id": "versions",
+      "mode": "both",
+      "title": "Edition und Nachträge nicht vermischen",
+      "category": "Quellstand",
+      "summary": "Diese Referenz verwendet die publizierten 2026-Kataloge TARDOC 1.4c_260402 und Pauschalen 1.1c.",
+      "detail": "A2-Stand: 02.04.2026; A1-Stand laut Übersichtsseite: 05.11.2025. Erläuterungen auf der Vertragsseite wurden zum Teil am 08.09.2026 aktualisiert. Der lokale Katalogimport beinhaltet diese späteren separaten PDF-Klarstellungen nicht; sie sind auf der Originalseite zu prüfen.",
+      "sources": [
+        "version",
+        "release"
+      ]
+    },
+    {
+      "id": "rights",
+      "mode": "both",
+      "title": "Vollständige Kataloge nur lokal öffnen",
+      "category": "Datenumfang",
+      "summary": "Öffentlich enthalten sind eigene Zusammenfassungen und geprüfte offizielle Quellverweise, keine OAAT-Positionstexte oder Grouperdaten.",
+      "detail": "Die OAAT-Bedingungen sind keine offene weltweite Weiterveröffentlichungslizenz. Für eine öffentliche vollständige Katalogspiegelung ist die Rechtefrage ungeklärt. Nach Klärung der eigenen Nutzungsbefugnis kann der lokale Konverter beide offiziellen XLSX vollständig für diesen Browser aufbereiten. Das JSON bleibt im Arbeitsspeicher; keine Übertragung und keine Speicherung des Katalogs.",
+      "sources": [
+        "legal",
+        "license",
+        "version"
+      ]
+    }
+  ]
+}

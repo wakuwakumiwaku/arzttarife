@@ -1,0 +1,23 @@
+{
+  "app": "arzttarife.local-catalog",
+  "version": 1,
+  "edition": "2026-1.4c-1.1c",
+  "sources": [
+    {
+      "id": "tardoc",
+      "sha256": "df4961dd22e6983f0829dbc556092afdb8f86f129ff17e39ae0ca6bce95af256"
+    },
+    {
+      "id": "pauschalen",
+      "sha256": "72371deebdbd3b090a5f45b59142933a27f3dbc6e6a45e6eaee36b143ddfea2a"
+    }
+  ],
+  "bytes": 3113099,
+  "sha256": "d151464676c530656426ac5b089df95634f405f800a8189e6587141979028712",
+  "counts": {
+    "tardoc": 1388,
+    "pauschalen": 314
+  },
+  "contexts": 9,
+  "rounding": "Decimal ROUND_HALF_UP auf 2 Nachkommastellen je AL/IPL-Komponente bzw. Pauschalenwert; Rohzelle bleibt in raw erhalten."
+}

@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "edition": "2026",
+  "reviewDate": "2026-10-22",
+  "policy": "reference-only-public; complete local catalog optional",
+  "files": [
+    {
+      "file": "anwendung.pdf",
+      "url": "https://oaat-otma.ch/fileadmin/redaktion/dokumente/DE/Gesamt-Tarifsystem/Vertraege_und_Anhaenge/250430_AnhangB_Anwendungsmodalitaeten.pdf",
+      "final_url": "https://oaat-otma.ch/fileadmin/redaktion/dokumente/DE/Gesamt-Tarifsystem/Vertraege_und_Anhaenge/250430_AnhangB_Anwendungsmodalitaeten.pdf",
+      "retrieved_at": "2026-10-22T03:40:00.360580+00:00",
+      "bytes": 311545,
+      "sha256": "9406a971195d529f50f0e7ade4dd6cc5bb6f0d0653d2ea89f58ac482db140a82"
+    },
+    {
+      "file": "browser-info.html",
+      "url": "https://oaat-otma.ch/tardoc/tarifbrowser",
+      "final_url": "https://oaat-otma.ch/tardoc/tarifbrowser",
+      "retrieved_at": "2026-10-22T03:39:48.717213+00:00",
+      "bytes": 35728,
+      "sha256": "3fe816e871005f2fd60a6d9f06137ee0cbb399d46652369ce8c2439364e0d2f4"
+    },
+    {
+      "file": "browser.html",
+      "url": "https://tarifbrowser.oaat-otma.ch/",
+      "final_url": "https://tarifbrowser.oaat-otma.ch/",
+      "retrieved_at": "2026-10-22T03:39:48.125692+00:00",
+      "bytes": 1768,
+      "sha256": "d4f99340193bb524cbc912cd8e495df92e7096fd01dea2aae82585770fced1c9"
+    },
+    {
+      "file": "contracts.html",
+      "url": "https://oaat-otma.ch/gesamt-tarifsystem/vertraege-und-anhaenge",
+      "final_url": "https://oaat-otma.ch/gesamt-tarifsystem/vertraege-und-anhaenge",
+      "retrieved_at": "2026-10-22T03:39:47.206264+00:00",
+      "bytes": 51285,
+      "sha256": "b22cd48c8cd987e5f08489c4b7b934b221adc2c10594d1dd356f52aacb4520b8"
+    },
+    {
+      "file": "downloads.html",
+      "url": "https://oaat-otma.ch/gesamt-tarifsystem/tarifkomponenten-und-software",
+      "final_url": "https://oaat-otma.ch/gesamt-tarifsystem/tarifkomponenten-und-software",
+      "retrieved_at": "2026-10-22T03:39:47.789710+00:00",
+      "bytes": 37694,
+      "sha256": "84c192c58251b006fa2a09fd92d0ef2abd73f108ab20296c0d02675527b6ef91"
+    },
+    {
+      "file": "faq.html",
+      "url": "https://oaat-otma.ch/gesamt-tarifsystem/faq",
+      "final_url": "https://oaat-otma.ch/gesamt-tarifsystem/faq",
+      "retrieved_at": "2026-10-22T03:39:40.933041+00:00",
+      "bytes": 113214,
+      "sha256": "35d5687b2af3058de1404780b2f2394a0e78f69819531d3cbb0d4486a9071fc4"
+    },
+    {
+      "file": "home.html",
+      "url": "https://oaat-otma.ch",
+      "final_url": "https://oaat-otma.ch",
+      "retrieved_at": "2026-10-22T03:39:40.470800+00:00",
+      "bytes": 35612,
+      "sha256": "cdd1d815f8c676ac2960c97300d343c30b44a6cb35317dacfe1c19fa71189aae"
+    },
+    {
+      "file": "legal.html",
+      "url": "https://oaat-otma.ch/rechtliche-hinweise",
+      "final_url": "https://oaat-otma.ch/rechtliche-hinweise",
+      "retrieved_at": "2026-10-22T03:39:46.503708+00:00",
+      "bytes": 42422,
+      "sha256": "3a49f0202a0d0fbcd3d17a837c76fb7f9add8b42ffa709b6fcca97575c1c64a8"
+    },
+    {
+      "file": "licenses.html",
+      "url": "https://oaat-otma.ch/gesamt-tarifsystem/tarifkomponenten/lizenzbedingungen",
+      "final_url": "https://oaat-otma.ch/gesamt-tarifsystem/tarifkomponenten/lizenzbedingungen",
+      "retrieved_at": "2026-10-22T03:39:52.969238+00:00",
+      "bytes": 37552,
+      "sha256": "6dce2b0aa27a48b1f09830ac653f2a987c07353cfbe3a434fca18b9aab1f70c0"
+    },
+    {
+      "file": "pauschalen.xlsx",
+      "url": "https://oaat-otma.ch/fileadmin/redaktion/dokumente/DE/Gesamt-Tarifsystem/Vertraege_und_Anhaenge/Anhang_A1_Katalog_der_Ambulanten_Pauschalen_v1.1c.xlsx",
+      "final_url": "https://oaat-otma.ch/fileadmin/redaktion/dokumente/DE/Gesamt-Tarifsystem/Vertraege_und_Anhaenge/Anhang_A1_Katalog_der_Ambulanten_Pauschalen_v1.1c.xlsx",
+      "retrieved_at": "2026-10-22T03:39:59.464591+00:00",
+      "bytes": 111526,
+      "sha256": "72371deebdbd3b090a5f45b59142933a27f3dbc6e6a45e6eaee36b143ddfea2a"
+    },
+    {
+      "file": "release.pdf",
+      "url": "https://oaat-otma.ch/fileadmin/redaktion/dokumente/DE/Gesamt-Tarifsystem/Vertraege_und_Anhaenge/Releasenotes.pdf",
+      "final_url": "https://oaat-otma.ch/fileadmin/redaktion/dokumente/DE/Gesamt-Tarifsystem/Vertraege_und_Anhaenge/Releasenotes.pdf",
+      "retrieved_at": "2026-10-22T03:40:00.726075+00:00",
+      "bytes": 449982,
+      "sha256": "eedb185188601b34d4ebe04c30d3a2a10b6bc6f3493227b1a2c5c3ccc4c3d44c"
+    },
+    {
+      "file": "tardoc.xlsx",
+      "url": "https://oaat-otma.ch/fileadmin/redaktion/dokumente/DE/Gesamt-Tarifsystem/Vertraege_und_Anhaenge/Anhang_A2_Katalog_des_TARDOC_1.4c.xlsx",
+      "final_url": "https://oaat-otma.ch/fileadmin/redaktion/dokumente/DE/Gesamt-Tarifsystem/Vertraege_und_Anhaenge/Anhang_A2_Katalog_des_TARDOC_1.4c.xlsx",
+      "retrieved_at": "2026-10-22T03:40:00.028723+00:00",
+      "bytes": 888136,
+      "sha256": "df4961dd22e6983f0829dbc556092afdb8f86f129ff17e39ae0ca6bce95af256"
+    }
+  ]
+}

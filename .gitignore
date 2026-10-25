@@ -1,0 +1,7 @@
+sources/
+.local/
+dist/
+.build-*/
+node_modules/
+__pycache__/
+*.pyc

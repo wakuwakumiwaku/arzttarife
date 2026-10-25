@@ -1,0 +1,6 @@
+{
+  "name": "arzttarife", "version": "1.0.0", "private": true, "type": "module",
+  "description": "TARDOC & Ambulante Pauschalen: Quellenreferenz, lokaler Katalogbrowser und exakter Szenariorechner",
+  "engines": {"node": ">=22"},
+  "scripts": {"check": "node scripts/check.mjs", "test": "node --experimental-vm-modules --test tests/*.test.mjs && python3 -I -B -m unittest discover -s tests -p 'test_*.py' -v", "test:browser": "npm run build && node tests/browser.mjs", "build": "node scripts/build.mjs", "serve": "node scripts/serve.mjs"}
+}

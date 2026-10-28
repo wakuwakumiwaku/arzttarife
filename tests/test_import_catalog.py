@@ -7,6 +7,9 @@ import hashlib
 import json
 import zipfile
 import sys
+import os
+import io
+from contextlib import redirect_stdout, redirect_stderr
 from unittest.mock import patch
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -79,5 +82,106 @@ class ImportTests(unittest.TestCase):
         profile=json.loads((ROOT/'public/data/local-profile.json').read_text())
         self.assertEqual(hashlib.sha256(data).hexdigest(),profile['sha256'])
         self.assertEqual(len(data),profile['bytes'])
+
+class OutputBoundaryTests(unittest.TestCase):
+    # Only the source-conversion boundary is adapted. Exercise real main(),
+    # argument parsing, output authorization, directory creation and file writes.
+    catalog = {'positions': [], 'contexts': [], 'synthetic': 'PRIVATE TEST CANARY'}
+
+    def invoke(self, root, output):
+        stdout, stderr = io.StringIO(), io.StringIO()
+        with patch.object(IMP, 'ROOT', root), \
+             patch.object(IMP, 'convert', return_value=self.catalog) as convert, \
+             patch.object(sys, 'argv', ['import_catalog.py', '--output', str(output)]), \
+             redirect_stdout(stdout), redirect_stderr(stderr):
+            try:
+                IMP.main()
+                code = 0
+            except SystemExit as exc:
+                code = exc.code
+        return code, convert.call_count, stdout.getvalue(), stderr.getvalue()
+
+    def assert_refused_without_write(self, root, output, exposed):
+        previous = exposed.read_bytes() if exposed.exists() else None
+        code, calls, _, stderr = self.invoke(root, output)
+        after = exposed.read_bytes() if exposed.exists() else None
+        print(json.dumps({'output': str(output.relative_to(root)),
+                          'exit_code': code, 'conversion_calls': calls,
+                          'public_or_external_bytes_changed': after != previous}))
+        self.assertEqual(after, previous, 'private catalog must not be emitted into a public or external target')
+        self.assertEqual(code, 2, 'unsafe output must be rejected by argparse')
+        self.assertEqual(calls, 0, 'reject unsafe output before reading/converting private sources')
+        self.assertIn('Output must be inside ignored', stderr)
+
+    def test_symlinked_private_root_cannot_publish_into_public(self):
+        for private in ('.local', 'sources'):
+            with self.subTest(private=private), tempfile.TemporaryDirectory(prefix='arzttarife-output-') as d:
+                root = pathlib.Path(d)
+                public = root / 'public'
+                public.mkdir()
+                (root / private).symlink_to(public, target_is_directory=True)
+                self.assert_refused_without_write(root, root / private / 'catalog.json', public / 'catalog.json')
+
+    def test_symlinked_private_root_cannot_write_outside_repository(self):
+        for private in ('.local', 'sources'):
+            with self.subTest(private=private), tempfile.TemporaryDirectory(prefix='arzttarife-output-') as d:
+                base = pathlib.Path(d)
+                root, external = base / 'repo', base / 'external'
+                root.mkdir()
+                external.mkdir()
+                (root / private).symlink_to(external, target_is_directory=True)
+                self.assert_refused_without_write(root, root / private / 'catalog.json', external / 'catalog.json')
+
+    def test_dangling_private_root_cannot_create_public_directory(self):
+        for private in ('.local', 'sources'):
+            with self.subTest(private=private), tempfile.TemporaryDirectory(prefix='arzttarife-output-') as d:
+                root = pathlib.Path(d)
+                public = root / 'public'
+                (root / private).symlink_to(public, target_is_directory=True)
+                self.assert_refused_without_write(root, root / private / 'catalog.json', public / 'catalog.json')
+                self.assertFalse(public.exists(), 'refused output must not even create its public parent')
+
+    def test_nested_directory_and_file_symlinks_preserve_public_bytes(self):
+        for private in ('.local', 'sources'):
+            for file_link in (False, True):
+                with self.subTest(private=private, file_link=file_link), tempfile.TemporaryDirectory(prefix='arzttarife-output-') as d:
+                    root = pathlib.Path(d)
+                    public = root / 'public'
+                    public.mkdir()
+                    exposed = public / 'catalog.json'
+                    exposed.write_bytes(b'UNCHANGED PUBLIC CANARY')
+                    directory = root / private
+                    directory.mkdir()
+                    link = directory / ('catalog.json' if file_link else 'nested')
+                    link.symlink_to(exposed if file_link else public, target_is_directory=not file_link)
+                    self.assert_refused_without_write(root, link if file_link else link / 'catalog.json', exposed)
+
+    def test_real_private_directories_accept_nested_and_normalized_paths(self):
+        for private in ('.local', 'sources'):
+            with self.subTest(private=private), tempfile.TemporaryDirectory(prefix='arzttarife-output-') as d:
+                root = pathlib.Path(d)
+                output = pathlib.Path(private) / 'unused' / '..' / 'nested' / 'catalog.json'
+                previous_cwd = pathlib.Path.cwd()
+                try:
+                    os.chdir(root)
+                    code, calls, stdout, stderr = self.invoke(root, output)
+                finally:
+                    os.chdir(previous_cwd)
+                self.assertEqual((code, calls, stderr), (0, 1, ''))
+                payload = (root / output).resolve().read_bytes()
+                self.assertEqual(json.loads(payload), self.catalog)
+                self.assertEqual(json.loads(stdout)['sha256'], hashlib.sha256(payload).hexdigest())
+
+    def test_private_aliases_stay_supported_but_direct_public_output_is_refused(self):
+        with tempfile.TemporaryDirectory(prefix='arzttarife-output-') as d:
+            root = pathlib.Path(d)
+            (root / '.local').mkdir()
+            (root / 'sources').symlink_to(root / '.local', target_is_directory=True)
+            output = root / 'sources' / 'catalog.json'
+            code, calls, _, stderr = self.invoke(root, output)
+            self.assertEqual((code, calls, stderr), (0, 1, ''))
+            self.assertEqual(json.loads(output.read_bytes()), self.catalog)
+            self.assert_refused_without_write(root, root / 'public' / 'catalog.json', root / 'public' / 'catalog.json')
+
 
 if __name__ == '__main__': unittest.main()

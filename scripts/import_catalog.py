@@ -116,7 +116,9 @@ def main():
     args = p.parse_args()
     output = args.output.resolve()
     # Never emit protected catalog material into a publishable tree.
-    if not any(output.is_relative_to((ROOT / d).resolve()) for d in ('.local', 'sources')):
+    # Resolve the requested target, not the allowlist directories: resolving
+    # .local/ or sources/ would let a symlink authorize a public/external tree.
+    if not any(output.is_relative_to(ROOT.resolve() / d) for d in ('.local', 'sources')):
         p.error('Output must be inside ignored .local/ or sources/. Never publish the local catalog.')
     catalog = convert(args.sources)
     output.parent.mkdir(parents=True, exist_ok=True)

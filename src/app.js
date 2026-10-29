@@ -38,12 +38,16 @@ function renderResults(reset=true){
  const v=$('view').value,isRef=v==='reference';
  $('browser-title').textContent=isRef?'Referenz durchsuchen':v==='positions'?'Lokale Tarifpositionen':'Lokale Begleittabellen';
  $('corpus').textContent=isRef?'Eigene Zusammenfassungen':catalog?'Nur in diesem Tab':'Katalog nicht geladen';
- $('results').replaceChildren();
+ $('results').replaceChildren();filtered=[];
  if(!isRef&&!catalog){$('count').textContent='Kein lokaler Katalog geladen.';const p=el('p','Der öffentliche Umfang enthält keine Tarifpositionen. Vollständige Originale nach Prüfung der eigenen Nutzungsbefugnis lokal öffnen.','empty');const a=el('a','Zur Importanleitung');a.href='#local-catalog';p.append(el('br'),a);$('results').append(p);$('more').hidden=true;return;}
  filtered=filterRecords(records,{mode:draft.mode,query:$('search').value,category:$('category').value,favoritesOnly:$('favorites-only').checked,favorites:draft.favorites});
- $('count').textContent=`${filtered.length} Treffer · ${Math.min(visible,filtered.length)} angezeigt`;
  if(!filtered.length)$('results').append(el('p','Keine Treffer. Suchbegriff, Bereich oder Merkliste zurücksetzen.','empty'));
- for(const r of filtered.slice(0,visible)){
+ appendResults();
+}
+function appendResults(start=0){
+ const v=$('view').value,isRef=v==='reference';
+ $('count').textContent=`${filtered.length} Treffer · ${Math.min(visible,filtered.length)} angezeigt`;
+ for(const r of filtered.slice(start,visible)){
   const card=el('article',undefined,'result');card.dataset.id=r.id;
   const h=el('h3');const b=el('button',(r.code?r.code+' · ':'')+r.title,'detail-link');b.type='button';b.addEventListener('click',()=>openDetail(r));h.append(b);card.append(h);
   if(isRef)card.append(el('p',r.summary));
@@ -120,7 +124,7 @@ async function boot(){
  for(const id of ['search','category','favorites-only'])$(id).addEventListener(id==='search'?'input':'change',()=>renderResults());
  $('view').addEventListener('change',()=>{populateCategories();renderResults();});
  $('reset').addEventListener('click',()=>{$('search').value='';$('category').value='';$('favorites-only').checked=false;renderResults();$('search').focus();});
- $('more').addEventListener('click',()=>{const before=Math.min(visible,filtered.length);visible+=30;renderResults(false);$('results').children[before]?.querySelector('button')?.focus();});
+ $('more').addEventListener('click',()=>{const before=Math.min(visible,filtered.length);visible+=30;appendResults(before);$('results').children[before]?.querySelector('button')?.focus();});
  $('calc-form').addEventListener('input',e=>{const k=e.target.name;if(Object.hasOwn(draft.calculators[draft.mode],k)){draft.calculators[draft.mode][k]=e.target.value;calcOrigin='Eigene Eingaben; keine Fallzuordnung.';$('calc-origin').textContent=calcOrigin;markDirty();paintCalculation();}});
  $('calc-form').addEventListener('submit',e=>{e.preventDefault();paintCalculation();});
  $('save').addEventListener('click',()=>{try{store.save(draft);dirty=false;paintStorage();notice('Arbeitsstand lokal gespeichert.');}catch(e){paintStorage();$('storage-status').textContent=e.message;notice(e.message);}});

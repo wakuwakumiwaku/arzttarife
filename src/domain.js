@@ -96,7 +96,12 @@ export async function verifyCatalogText(text,profile) {
 }
 export function filterRecords(records,{mode,query='',category='',favoritesOnly=false,favorites=[]}) {
  const words=normalize(query).trim().split(/\s+/).filter(Boolean),saved=new Set(favorites);
- return records.filter(r=>(r.mode===mode||r.mode==='both')&&(!category||(r.category||r.chapter)===category)&&(!favoritesOnly||saved.has(r.id))&&words.every(w=>normalize([r.id,r.code,r.title,r.summary,r.detail,r.interpretation,...(r.fields||[]).map(f=>f.text)].filter(Boolean).join(' ')).includes(w)));
+ return records.filter(r=>{
+  if((r.mode!==mode&&r.mode!=='both')||(category&&(r.category||r.chapter)!==category)||(favoritesOnly&&!saved.has(r.id)))return false;
+  if(!words.length)return true;
+  const text=normalize([r.id,r.code,r.title,r.summary,r.detail,r.interpretation,...(r.fields||[]).map(f=>f.text)].filter(Boolean).join(' '));
+  return words.every(w=>text.includes(w));
+ });
 }
 export class WorkspaceStore {
  constructor(storage,reference) {

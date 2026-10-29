@@ -1,4 +1,4 @@
-// QA platform adapter v4: unchanged full app/domain; no product-function replacements.
+// QA platform adapter v5: unchanged full app/domain; no product-function replacements.
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import {readFile} from 'node:fs/promises';
@@ -15,7 +15,7 @@ assert.equal(first,"import {MODES,STORAGE_KEY,calculate,money,validateReference,
 export function deferred(){let resolve,reject;const promise=new Promise((yes,no)=>{resolve=yes;reject=no;});return {promise,resolve,reject};}
 export const foreignKeys=['dentotar.workspace.v1','migel.workspace.v1','sl.workspace.v1','analysenliste.workspace.v1','pflegefinanzierung.workspace.v1','arzneimittelliste.workspace.v1','physiotherapie.workspace.v1','spitaltarife.workspace.v1'];
 class Node {
- constructor(tag='div'){this.tagName=tag.toUpperCase();this.children=[];this.events={};this.attrs={};this.dataset={};this._text='';this.value='';this.name='';this.open=false;this.hidden=false;this.disabled=false;this.checked=false;this.files=[];this.classList={add(){},remove(){}};}
+ constructor(tag='div',ownerDocument=null){this.ownerDocument=ownerDocument;this.tagName=tag.toUpperCase();this.children=[];this.events={};this.attrs={};this.dataset={};this._text='';this.value='';this.name='';this.open=false;this.hidden=false;this.disabled=false;this.checked=false;this.files=[];this.classList={add(){},remove(){}};}
  get textContent(){return this._text+this.children.map(n=>n.textContent??String(n)).join('');}
  set textContent(s){this._text=String(s);this.children=[];}
  append(...nodes){this.children.push(...nodes);}
@@ -27,16 +27,18 @@ class Node {
  showModal(){this.open=true;}
  close(){this.open=false;}
  scrollIntoView(){}
- focus(){}
+ focus(){if(this.ownerDocument)this.ownerDocument.activeElement=this;}
+ querySelector(selector){assert.equal(selector,'button');for(const child of this.children){if(child.tagName==='BUTTON')return child;const found=child.querySelector?.(selector);if(found)return found;}return null;}
  click(){return this.emit('click');}
  remove(){}
 }
 export async function realm(){
- const ids=new Map();const get=id=>{if(!ids.has(id))ids.set(id,new Node(id==='category'?'select':'div'));return ids.get(id);};
+ const ids=new Map();const get=id=>{if(!ids.has(id))ids.set(id,new Node(id==='category'?'select':'div',document));return ids.get(id);};
+ const document={body:new Node('body'),activeElement:null,getElementById:get,createElement:t=>new Node(t,document)};
  get('view').value='reference';get('category').value='';
  const map=new Map(),writes=[],events={},trace=[];let readFault=false,digestGate=null;
  const storage={getItem:k=>{if(readFault)throw Error('QA read denied');return map.get(k)??null;},setItem:(k,v)=>{writes.push([k,v]);map.set(k,v);}};
- const document={body:new Node('body'),getElementById:get,createElement:t=>new Node(t)};
+
  const window={localStorage:storage,addEventListener:(type,f)=>(events[type]??=[]).push(f),print(){}};
  const crypto={subtle:{digest(...args){
   const native=webcrypto.subtle.digest(...args),gate=digestGate;digestGate=null;
@@ -44,7 +46,7 @@ export async function realm(){
   gate.started.resolve();native.then(value=>{gate.native.resolve(value);},e=>gate.native.reject(e));
   return gate.delivery.promise.then(()=>gate.native.promise);
  }}};
- const context=vm.createContext({document,window,Option:function(t,v){const n=new Node('option');n.textContent=t;n.value=v;return n;},structuredClone,Blob,URL,TextEncoder,Uint8Array,console,setTimeout,clearTimeout,crypto,fetch:async url=>({ok:true,json:async()=>structuredClone(url==='data/reference.json'?reference:profile)})});
+ const context=vm.createContext({document,window,Option:function(t,v){const n=new Node('option',document);n.textContent=t;n.value=v;return n;},structuredClone,Blob,URL,TextEncoder,Uint8Array,console,setTimeout,clearTimeout,crypto,fetch:async url=>({ok:true,json:async()=>structuredClone(url==='data/reference.json'?reference:profile)})});
  // Exact domain ESM binds every lexical dependency, including crypto and validation helpers.
  const module=new vm.SourceTextModule(domainSource,{context,identifier:new URL('src/domain.js',root).href});
  await module.link(()=>{throw Error('Unexpected domain import');});await module.evaluate();

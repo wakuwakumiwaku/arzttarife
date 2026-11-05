@@ -1,5 +1,9 @@
 # Codebasis und Schnittstellen
 
+### Lokale HTTP-Authority
+
+Der Entwicklungsserver akzeptiert ausschliesslich die Hostnamen `localhost`, `127.0.0.1` und `[::1]`, jeweils optional mit einem Port von 1 bis 65535. Andere Authorities werden vor der Dateiauslieferung mit 403, ein fehlender Host mit 400 abgewiesen. Dies ergänzt die Loopback-Bindung gegen Zugriffe mit fremdem Hostnamen; es ist keine Authentifizierung oder TLS-Grenze. `tests/server-host.test.mjs` prüft GET/HEAD mit fremden, ähnlich aussehenden und ungültigen Authorities sowie reguläre lokale Hosts an einem kurzlebigen Loopback-Server.
+
 ## Architektur
 
 Statische, serverlose Vanilla-ESM-Anwendung. Kein Backend, kein Konto, keine Patientendaten, keine Laufzeitabhängigkeiten. JSON-Daten werden relativ zum aktuellen Pages-Unterpfad geladen. Alle Quelltexte und Eingaben werden durch DOM-Methoden und `textContent` ausgegeben. Keine unkontrollierten HTML-Sinks. CSP verhindert externe Skript-/Verbindungsziele.

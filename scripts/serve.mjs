@@ -9,6 +9,11 @@ export function createAppServer({root=path.join(project,'dist'),basePath='/'}={}
  if(!/^\/(?:[A-Za-z0-9_-]+\/)*$/.test(basePath))throw Error('basePath must be a simple absolute directory path ending in /.');
  return http.createServer(async(req,res)=>{
   const send=(code,text)=>{res.writeHead(code,{'content-type':'text/plain; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff'});res.end(req.method==='HEAD'?undefined:text);};
+  // Binding to loopback alone does not reject requests addressed to other origins.
+  const authority=req.headers.host;
+  if(typeof authority!=='string'||!authority){send(400,'Missing Host');return;}
+  const local=authority.match(/^(?:localhost|127\.0\.0\.1|\[::1\])(?::([0-9]{1,5}))?$/i);
+  if(!local||(local[1]!==undefined&&(Number(local[1])<1||Number(local[1])>65535))){send(403,'Local Host required');return;}
   if(!['GET','HEAD'].includes(req.method)){res.setHeader('Allow','GET, HEAD');send(405,'Method not allowed');return;}
   let pathname;try{pathname=decodeURIComponent(new URL(req.url,'http://127.0.0.1').pathname);}catch{send(400,'Bad URL');return;}
   if(!pathname.startsWith(basePath)){send(404,'Not found');return;}

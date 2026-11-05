@@ -417,8 +417,30 @@ register('Q01 saved recovery: held native file input cannot replace saved previe
  report.intentRecovery={selected,after,dirtyBefore:dirty,confirmed:saved,rawBefore:beforeRaw,rawAfter:await raw(p),completion:'original DOM change handler returned promise settled',nativeFileText:'original File.prototype.text on selected File, delivered late'};
 },{fileIO:true}));
 
+register('bookmark keyboard: stable toggles and predictable focus after filtered removal',()=>withPage(async p=>{
+ const rows=expectedRows('tardoc'),first=rows[0],second=rows[1];assert(rows.length>=2);
+ const favorite=id=>card(p,id).locator('.result-footer button');
+ await p.evaluate(()=>{window.__bookmarkRows=[...document.querySelector('#results').children];window.__bookmarkControl=document.querySelector('#results .result-footer button');});
+ await favorite(first.id).focus();await p.keyboard.press('Space');
+ const afterToggle=await p.evaluate(()=>({sameRows:window.__bookmarkRows.every((e,i)=>document.querySelector('#results').children[i]===e),sameControl:window.__bookmarkControl===document.querySelector('#results .result-footer button'),focused:document.activeElement===window.__bookmarkControl,pressed:document.querySelector('#results .result-footer button').getAttribute('aria-pressed')}));
+ assert.deepEqual(afterToggle,{sameRows:true,sameControl:true,focused:true,pressed:'true'},'bookmarking must keep the connected keyboard control and existing result rows');
+ assert.equal(await raw(p),null,'bookmark edits remain unsaved until explicit Save');
+ await p.keyboard.press('Enter');assert.equal(await favorite(first.id).getAttribute('aria-pressed'),'false');
+ await p.keyboard.press('Space');assert.equal(await favorite(first.id).getAttribute('aria-pressed'),'true');
+ await favorite(second.id).click();await p.locator('#favorites-only').check();
+ assert.deepEqual(await p.locator('#results article').evaluateAll(es=>es.map(e=>e.dataset.id)),[first.id,second.id]);
+ await favorite(first.id).focus();await p.keyboard.press('Space');
+ assert.equal(await favorite(second.id).evaluate(e=>e===document.activeElement),true,'removing a filtered favorite focuses the next remaining bookmark');
+ assert.deepEqual(await p.locator('#results article').evaluateAll(es=>es.map(e=>e.dataset.id)),[second.id]);
+ await p.keyboard.press('Enter');assert.equal(await p.locator('#results article').count(),0);
+ assert.equal(await p.locator('#favorites-only').evaluate(e=>e===document.activeElement),true,'the empty favorites list returns focus to its filter');
+ assert.match(await text(p,'#results'),/Keine Treffer/);assert.equal(await raw(p),null);
+ const exported=await download(p,'keyboard-bookmarks');assert.deepEqual(exported.value.favorites,[]);
+ await p.locator('#reset').click();assert.deepEqual(await p.locator('#results article').evaluateAll(es=>es.map(e=>e.dataset.id)),rows.map(r=>r.id));
+}));
+
 if(listOnly){
- if(selfTest){assert.equal(caseDefs.length,20);assert.equal(caseDefs.at(-1).name.startsWith('Q01 saved recovery:'),true);assert.equal(expectedAmounts.length,8);}
+ if(selfTest){assert.equal(caseDefs.length,21);assert.equal(caseDefs.at(-1).name.startsWith('bookmark keyboard:'),true);assert.equal(expectedAmounts.length,8);}
  console.log(JSON.stringify({mode:selfTest?'self-test-offline':'list-only',nativeExecuted:false,node:process.version,python:report.python,privateFixtureAvailable:Boolean(fixture),total:caseDefs.length,cases:caseDefs.map(({name,privateOnly})=>({name,privateOnly})),oracleVectors:vectors.map((v,i)=>({input:v,expected:expectedAmounts[i]}))},null,2));
  process.exit(0);
 }

@@ -17,9 +17,9 @@ export const foreignKeys=['dentotar.workspace.v1','migel.workspace.v1','sl.works
 class Node {
  constructor(tag='div',ownerDocument=null){this.ownerDocument=ownerDocument;this.tagName=tag.toUpperCase();this.children=[];this.events={};this.attrs={};this.dataset={};this._text='';this.value='';this.name='';this.open=false;this.hidden=false;this.disabled=false;this.checked=false;this.files=[];this.classList={add(){},remove(){}};}
  get textContent(){return this._text+this.children.map(n=>n.textContent??String(n)).join('');}
- set textContent(s){this._text=String(s);this.children=[];}
- append(...nodes){this.children.push(...nodes);}
- replaceChildren(...nodes){this._text='';this.children=[...nodes];if(this.tagName==='SELECT')this.value=nodes[0]?.value??'';}
+ set textContent(s){for(const child of [...this.children])child.remove();this._text=String(s);}
+ append(...nodes){for(const node of nodes){node.remove();node.parentElement=this;this.children.push(node);}}
+ replaceChildren(...nodes){for(const child of [...this.children])child.remove();this._text='';this.append(...nodes);if(this.tagName==='SELECT')this.value=nodes[0]?.value??'';}
  addEventListener(type,f){(this.events[type]??=[]).push(f);}
  async emit(type,event={}){for(const f of this.events[type]??[])await f({target:this,preventDefault(){},...event});}
  setAttribute(k,v){this.attrs[k]=String(v);}
@@ -29,8 +29,9 @@ class Node {
  scrollIntoView(){}
  focus(){if(this.ownerDocument)this.ownerDocument.activeElement=this;}
  querySelector(selector){assert.equal(selector,'button');for(const child of this.children){if(child.tagName==='BUTTON')return child;const found=child.querySelector?.(selector);if(found)return found;}return null;}
+ querySelectorAll(selector){assert.equal(selector,'.result-footer button');const all=node=>node.children.flatMap(child=>[child,...all(child)]);return all(this).filter(node=>node.tagName==='BUTTON'&&node.parentElement?.className==='result-footer');}
  click(){return this.emit('click');}
- remove(){}
+ remove(){if(!this.parentElement)return;const contains=node=>node===this.ownerDocument?.activeElement||node.children.some(contains);if(contains(this))this.ownerDocument.activeElement=this.ownerDocument.body;this.parentElement.children=this.parentElement.children.filter(node=>node!==this);this.parentElement=null;}
 }
 export async function realm(){
  const ids=new Map();const get=id=>{if(!ids.has(id))ids.set(id,new Node(id==='category'?'select':'div',document));return ids.get(id);};

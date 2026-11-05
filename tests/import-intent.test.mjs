@@ -224,12 +224,13 @@ test('activation, same-ID notes-only replacement and unload never retain old res
  await view(r,'contexts');assert.equal(filteredRows(r).length,0);
  activateRenderFixture(r,a);assertCards(r,a.positions.filter(x=>x.mode==='tardoc').slice(0,30));r.intact();
 });
-test('favorite toggles and real workspace import/recovery invalidate results without implicit storage writes',async()=>{
+test('favorite toggles retain controls while real workspace import/recovery invalidates results without implicit storage writes',async()=>{
  const r=await realm();activateRenderFixture(r);await r.get('more').click();await view(r,'reference');
  const first=resultRows(r)[0],id=first.dataset.id,old=filteredRows(r);
- // Preserve the existing favorite-toggle prefix exception, while still searching anew.
+ // An ordinary favorite edit preserves its current connected result generation.
  vm.runInContext('visible=60',r.context);await first.children.at(-1).children.at(-1).click();
- assert.notEqual(filteredRows(r),old);assert.notEqual(resultRows(r)[0],first);assert.equal(vm.runInContext('visible',r.context),60);assert(r.state().draft.favorites.includes(id));
+ assert.equal(filteredRows(r),old);assert.equal(resultRows(r)[0],first);assert.equal(vm.runInContext('visible',r.context),60);assert(r.state().draft.favorites.includes(id));
+ const star=first.children.at(-1).children.at(-1);assert.equal(star.getAttribute('aria-pressed'),'true');await star.click();assert.equal(star.getAttribute('aria-pressed'),'false');await star.click();assert.equal(star.getAttribute('aria-pressed'),'true');assert.equal(resultRows(r)[0],first);r.intact();
  r.get('favorites-only').checked=true;await r.get('favorites-only').emit('change');assert.deepEqual(resultRows(r).map(x=>x.dataset.id),[id]);
  await resultRows(r)[0].children.at(-1).children.at(-1).click();assert.equal(resultRows(r).length,0);
  const imported=r.valid('222');imported.favorites=['rights'];const before=filteredRows(r);

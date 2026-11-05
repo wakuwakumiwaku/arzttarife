@@ -1,4 +1,4 @@
-import {mkdir,writeFile,rename,rm} from 'node:fs/promises';
+import {mkdir,writeFile,rename,rm,lstat} from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {validatedInputs} from './check.mjs';
@@ -6,6 +6,7 @@ export async function build(root=fileURLToPath(new URL('../',import.meta.url))){
  // All inputs read and validated before any replacement of last good output.
  const buffers=await validatedInputs(root);
  const stage=path.join(root,`.build-stage-${process.pid}-${Date.now()}`),old=stage+'-old',out=path.join(root,'dist');
+ try{const stat=await lstat(out);if(!stat.isDirectory()||stat.isSymbolicLink())throw Error('Build destination must be a regular directory, not a file or symlink');}catch(e){if(e.code!=='ENOENT')throw e;}
  let backed=false;
  try{
   await mkdir(stage);

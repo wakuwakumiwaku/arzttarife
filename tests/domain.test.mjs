@@ -32,6 +32,21 @@ test('complete reference and all token search across modes, categories, favorite
  assert.equal(filterRecords(reference.entries,{mode:'tardoc',favoritesOnly:true,favorites:['rights']})[0].id,'rights');
  const bad=structuredClone(reference);bad.documents[0].url='javascript:alert(1)';assert.throws(()=>validateReference(bad));
 });
+for(const [mode,code,other] of [['tardoc','ZX.91.0078','ZX.91.0077'],['pauschalen','C98.76Z','C98.76Y']]){
+ test(`exact ${mode} code precedes text mentions without dropping or reordering other matches`,()=>{
+  const mention={id:`${mode}:${other}`,mode,code:other,chapter:'A',interpretation:`Siehe ${code}`};
+  const context={id:'context',mode,fields:[{name:'A',text:`Siehe ${code}`}]};
+  const exact={id:`${mode}:${code}`,mode,code,chapter:'B',title:'Siehe auch'};
+  const reference={id:'ref',mode:'both',detail:`Siehe ${code}`};
+  const rows=Object.freeze([mention,context,exact,reference]);
+  const search=(query,options={})=>filterRecords(rows,{mode,query,...options});
+  assert.deepEqual(search(`  ${code.toLowerCase()}  `),[exact,mention,context,reference]);
+  for(const query of ['',code.slice(0,-1),'siehe',`${code} siehe`])assert.deepEqual(search(query),rows);
+  assert.deepEqual(search(code,{category:'A'}),[mention]);
+  assert.deepEqual(search(code,{favoritesOnly:true,favorites:['ref']}),[reference]);
+  assert.deepEqual(search(code,{mode:mode==='tardoc'?'pauschalen':'tardoc'}),[reference]);
+ });
+}
 test('storage is only explicit, key isolated; corrupt/blocked/foreign state stays byte-identical',()=>{
  const s=memory();s.setItem('migel.workspace.v1','canary');const st=new WorkspaceStore(s,reference);
  assert.equal(s.getItem(STORAGE_KEY),null);st.save(emptyWorkspace(reference));assert.equal(s.getItem('migel.workspace.v1'),'canary');

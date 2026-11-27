@@ -96,12 +96,17 @@ export async function verifyCatalogText(text,profile) {
 }
 export function filterRecords(records,{mode,query='',category='',favoritesOnly=false,favorites=[]}) {
  const words=normalize(query).trim().split(/\s+/).filter(Boolean),saved=new Set(favorites);
- return records.filter(r=>{
-  if((r.mode!==mode&&r.mode!=='both')||(category&&(r.category||r.chapter)!==category)||(favoritesOnly&&!saved.has(r.id)))return false;
-  if(!words.length)return true;
-  const text=normalize([r.id,r.code,r.title,r.summary,r.detail,r.interpretation,...(r.fields||[]).map(f=>f.text)].filter(Boolean).join(' '));
-  return words.every(w=>text.includes(w));
- });
+ const codeQuery=String(query).trim().toLowerCase(),exactCodes=[],matches=[];
+ for(const r of records){
+  if((r.mode!==mode&&r.mode!=='both')||(category&&(r.category||r.chapter)!==category)||(favoritesOnly&&!saved.has(r.id)))continue;
+  if(words.length){
+   const text=normalize([r.id,r.code,r.title,r.summary,r.detail,r.interpretation,...(r.fields||[]).map(f=>f.text)].filter(Boolean).join(' '));
+   if(!words.every(w=>text.includes(w)))continue;
+   if(r.code?.toLowerCase()===codeQuery){exactCodes.push(r);continue;}
+  }
+  matches.push(r);
+ }
+ return exactCodes.length?exactCodes.concat(matches):matches;
 }
 export class WorkspaceStore {
  constructor(storage,reference) {
